@@ -1,26 +1,38 @@
-import Mock from 'mockjs';
-import qs from 'query-string';
 import dayjs from 'dayjs';
-import setupMock from '@/utils/setupMock';
 
-const { list } = Mock.mock({
-  'list|100': [
-    {
-      id: /[0-9]{8}[-][0-9]{4}/,
-      name: () =>
-        Mock.Random.pick([
-          '每日推荐视频集',
-          '抖音短视频候选集',
-          '国际新闻集合',
-        ]),
-      'contentType|0-2': 0,
-      'filterType|0-1': 0,
-      'count|0-2000': 0,
-      'createdTime|1-60': 0,
-      'status|0-1': 0,
-    },
-  ],
-});
+// const { list } = Mock.mock({
+//   'list|100': [
+//     {
+//       id: /[0-9]{8}[-][0-9]{4}/,
+//       name: () =>
+//         Mock.Random.pick([
+//           '每日推荐视频集',
+//           '抖音短视频候选集',
+//           '国际新闻集合',
+//         ]),
+//       'contentType|0-2': 0,
+//       'filterType|0-1': 0,
+//       'count|0-2000': 0,
+//       'createdTime|1-60': 0,
+//       'status|0-1': 0,
+//     },
+//   ],
+// });
+const names = ['每日推荐视频集', '抖音短视频候选集', '国际新闻集合'];
+const list = [];
+for (let i = 0; i < 100; i++) {
+  list.push({
+    id: `${Math.floor(Math.random() * 100000000)}-${Math.floor(
+      Math.random() * 10000
+    )}`,
+    name: names[Math.floor(Math.random() * names.length)],
+    contentType: Math.floor(Math.random() * 3),
+    filterType: Math.floor(Math.random() * 2),
+    count: Math.floor(Math.random() * 2001),
+    createdTime: Math.floor(Math.random() * 60) + 1,
+    status: Math.floor(Math.random() * 2),
+  });
+}
 
 const filterData = (
   rest: {
@@ -78,22 +90,33 @@ const filterData = (
   return result;
 };
 
-setupMock({
-  setup: () => {
-    Mock.mock(new RegExp('/api/list'), (params) => {
-      const {
-        page = 1,
-        pageSize = 10,
-        ...rest
-      } = qs.parseUrl(params.url).query;
-      const p = page as number;
-      const ps = pageSize as number;
+// setupMock({
+//   setup: () => {
+//     Mock.mock(new RegExp('/api/list'), (params) => {
+//       const {
+//         page = 1,
+//         pageSize = 10,
+//         ...rest
+//       } = qs.parseUrl(params.url).query;
+//       const p = page as number;
+//       const ps = pageSize as number;
 
-      const result = filterData(rest);
-      return {
-        list: result.slice((p - 1) * ps, p * ps),
-        total: result.length,
-      };
-    });
-  },
-});
+//       const result = filterData(rest);
+//       return {
+//         list: result.slice((p - 1) * ps, p * ps),
+//         total: result.length,
+//       };
+//     });
+//   },
+// });
+export const mockApiList = (params: any) => {
+  const { page = 1, pageSize = 10, ...rest } = params;
+  const p = page;
+  const ps = page;
+
+  const result = filterData(rest);
+  return {
+    list: result.slice((p - 1) * ps, p * ps),
+    total: result.length,
+  };
+};

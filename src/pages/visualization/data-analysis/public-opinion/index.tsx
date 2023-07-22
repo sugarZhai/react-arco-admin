@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Grid } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from '../locale';
-
+import { overviewList } from '../mock';
 const { Row, Col } = Grid;
 
 const cardInfo = [
@@ -38,17 +38,24 @@ function PublicOpinion() {
   );
 
   const getData = async () => {
-    const requestList = cardInfo.map(async (info) => {
-      const { data } = await axios
-        .get(`/api/data-analysis/overview?type=${info.type}`)
-        .catch(() => ({ data: {} }));
+    const requestList = cardInfo.map((info) => {
       return {
-        ...data,
+        ...overviewList(info),
         key: info.key,
         chartType: info.type,
       };
     });
-    const result = await Promise.all(requestList).finally(() =>
+    // const requestList = cardInfo.map(async (info) => {
+    //   const { data } = await axios
+    //     .get(`/api/data-analysis/overview?type=${info.type}`)
+    //     .catch(() => ({ data: {} }));
+    //   return {
+    //     ...data,
+    //     key: info.key,
+    //     chartType: info.type,
+    //   };
+    // });
+    const result: any = await Promise.all(requestList).finally(() =>
       setLoading(false)
     );
     setData(result);

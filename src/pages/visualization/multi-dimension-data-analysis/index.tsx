@@ -9,7 +9,7 @@ import locale from './locale';
 import DataOverview from './data-overview';
 import CardList from './card-list';
 
-import './mock';
+import { getPolarList, getActivityList, getContentList } from './mock';
 
 const { Row, Col } = Grid;
 const { Title } = Typography;
@@ -24,33 +24,36 @@ function DataAnalysis() {
   const [multiPie, setMultiPie] = useState([]);
 
   const getInterval = async () => {
-    setLoading(true);
-    const { data } = await axios
-      .get('/api/multi-dimension/activity')
-      .finally(() => {
-        setLoading(false);
-      });
-    setInterval(data);
+    // setLoading(true);
+    // const { data } = await axios
+    //   .get('/api/multi-dimension/activity')
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+    // setInterval(data);
+    setInterval(getActivityList());
   };
 
   const getPolar = async () => {
-    setPolarLoading(true);
-    const { data } = await axios
-      .get('/api/multi-dimension/polar')
-      .finally(() => setPolarLoading(false));
+    // setPolarLoading(true);
+    // const { data } = await axios
+    //   .get('/api/multi-dimension/polar')
+    //   .finally(() => setPolarLoading(false));
 
-    setPolar(data);
+    // setPolar(data);
+    setPolar(getPolarList());
   };
 
   const getMultiPie = async () => {
-    setMultiPieLoading(true);
-    const { data } = await axios
-      .get('/api/multi-dimension/content-source')
-      .finally(() => {
-        setMultiPieLoading(false);
-      });
+    // setMultiPieLoading(true);
+    // const { data } = await axios
+    //   .get('/api/multi-dimension/content-source')
+    //   .finally(() => {
+    //     setMultiPieLoading(false);
+    //   });
 
-    setMultiPie(data);
+    // setMultiPie(data);
+    setMultiPie(getContentList());
   };
 
   useEffect(() => {

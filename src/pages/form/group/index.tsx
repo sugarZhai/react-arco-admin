@@ -15,7 +15,6 @@ import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import './mock';
 
 function GroupForm() {
   const t = useLocale(locale);
@@ -23,17 +22,18 @@ function GroupForm() {
   const [loading, setLoading] = useState(false);
 
   function submit(data) {
-    setLoading(true);
-    axios
-      .post('/api/groupForm', {
-        data,
-      })
-      .then(() => {
-        Message.success(t['groupForm.submitSuccess']);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // setLoading(true);
+    // axios
+    //   .post('/api/groupForm', {
+    //     data,
+    //   })
+    //   .then(() => {
+    //     Message.success(t['groupForm.submitSuccess']);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+    Message.success(t['groupForm.submitSuccess']);
   }
 
   function handleSubmit() {

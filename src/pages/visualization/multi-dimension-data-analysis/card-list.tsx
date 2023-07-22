@@ -15,6 +15,7 @@ import locale from './locale';
 
 import { IconArrowRise, IconArrowFall } from '@arco-design/web-react/icon';
 import styles from './style/card-block.module.less';
+import { getCardList } from './mock';
 
 const { Row, Col } = Grid;
 const { Title, Text } = Typography;
@@ -165,19 +166,25 @@ function CardList() {
   );
 
   const getData = async () => {
-    const requestList = cardInfo.map(async (info) => {
-      const { data } = await axios
-        .get(`/api/multi-dimension/card?type=${info.type}`)
-        .catch(() => ({ data: {} }));
+    // const requestList = cardInfo.map(async (info) => {
+    //   const { data } = await axios
+    //     .get(`/api/multi-dimension/card?type=${info.type}`)
+    //     .catch(() => ({ data: {} }));
+    //   return {
+    //     ...data,
+    //     key: info.key,
+    //     chartType: info.type,
+    //   };
+    // });
+    // setLoading(true);
+    const requestList = cardInfo.map((info) => {
       return {
-        ...data,
+        ...getCardList(info),
         key: info.key,
         chartType: info.type,
       };
     });
-
-    setLoading(true);
-    const result = await Promise.all(requestList).finally(() =>
+    const result: any = await Promise.all(requestList).finally(() =>
       setLoading(false)
     );
     setData(result);

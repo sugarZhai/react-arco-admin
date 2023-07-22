@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import groupBy from 'lodash/groupBy';
 import {
   Trigger,
@@ -15,12 +15,15 @@ import {
   IconFile,
   IconDesktop,
 } from '@arco-design/web-react/icon';
-import useLocale from '../../utils/useLocale';
+import useLocale from '@/utils/useLocale';
+import { GlobalState } from '@/store';
 import MessageList, { MessageListType } from './list';
 import styles from './style/index.module.less';
+import { useSelector } from 'react-redux';
 
 function DropContent() {
   const t = useLocale();
+  const { messageList } = useSelector((state: GlobalState) => state);
   const [loading, setLoading] = useState(false);
   const [groupData, setGroupData] = useState<{
     [key: string]: MessageListType;
@@ -28,26 +31,28 @@ function DropContent() {
   const [sourceData, setSourceData] = useState<MessageListType>([]);
 
   function fetchSourceData(showLoading = true) {
-    showLoading && setLoading(true);
-    axios
-      .get('/api/message/list')
-      .then((res) => {
-        setSourceData(res.data);
-      })
-      .finally(() => {
-        showLoading && setLoading(false);
-      });
+    // showLoading && setLoading(true);
+    // axios
+    //   .get('/api/message/list')
+    //   .then((res) => {
+    //     setSourceData(res.data);
+    //   })
+    //   .finally(() => {
+    //     showLoading && setLoading(false);
+    //   });
+    setSourceData(messageList);
   }
 
   function readMessage(data: MessageListType) {
     const ids = data.map((item) => item.id);
-    axios
-      .post('/api/message/read', {
-        ids,
-      })
-      .then(() => {
-        fetchSourceData();
-      });
+    // axios
+    //   .post('/api/message/read', {
+    //     ids,
+    //   })
+    //   .then(() => {
+    //     fetchSourceData();
+    //   });
+    fetchSourceData();
   }
 
   useEffect(() => {

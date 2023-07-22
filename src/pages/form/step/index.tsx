@@ -46,7 +46,7 @@ function StepForm() {
       <Card>
         <Title heading={5}>{t['stepForm.desc.basicInfo']}</Title>
         <div className={styles.wrapper}>
-          <Steps current={current} lineless>
+          <Steps current={current}>
             <Steps.Step
               title={t['stepForm.title.basicInfo']}
               description={t['stepForm.desc.basicInfo']}

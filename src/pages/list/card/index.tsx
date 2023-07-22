@@ -7,7 +7,7 @@ import styles from './style/index.module.less';
 import CardBlock from './card-block';
 import AddCard from './card-add';
 import { QualityInspection, BasicCard } from './interface';
-import './mock';
+import { cardMockList } from './mock';
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -15,7 +15,7 @@ const { Row, Col } = Grid;
 const defaultList = new Array(10).fill({});
 export default function ListCard() {
   const t = useLocale(locale);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     quality: defaultList,
     service: defaultList,
@@ -25,12 +25,13 @@ export default function ListCard() {
   const [activeKey, setActiveKey] = useState('all');
 
   const getData = () => {
-    axios
-      .get('/api/cardList')
-      .then((res) => {
-        setData(res.data);
-      })
-      .finally(() => setLoading(false));
+    // axios
+    //   .get('/api/cardList')
+    //   .then((res) => {
+    //     setData(res.data);
+    //   })
+    //   .finally(() => setLoading(false));
+    setData(cardMockList);
   };
 
   useEffect(() => {

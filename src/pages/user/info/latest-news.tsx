@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { List, Typography, Skeleton, Avatar } from '@arco-design/web-react';
 import styles from './style/index.module.less';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { GlobalState } from '@/store';
 const { Paragraph } = Typography;
 interface INews {
   title?: string;
   description?: string;
   avatar?: string;
 }
-
 function LatestNews() {
-  const [data, setData] = useState<INews[]>(new Array(4).fill({}));
-  const [loading, setLoading] = useState(true);
+  const { lastNewsList } = useSelector((state: GlobalState) => state);
+  const [data, setData] = useState<INews[]>();
+  const [loading, setLoading] = useState(false);
 
-  const getData = async () => {
-    const { data } = await axios
-      .get('/api/user/latestNews')
-      .finally(() => setLoading(false));
-    setData(data);
+  const getData = () => {
+    setData([...lastNewsList]);
+    // const { data } = await axios
+    //   .get('/api/user/latestNews')
+    //   .finally(() => setLoading(false));
+    // setData(data);
+    // setData(lastNewsList)
   };
 
   useEffect(() => {
     getData();
   }, []);
-
   return (
     <List
       dataSource={data}

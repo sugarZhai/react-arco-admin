@@ -14,7 +14,7 @@ import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import styles from './style/index.module.less';
-import './mock';
+import { mockApiList } from './mock';
 import { getColumns } from './constants';
 
 const { Title } = Typography;
@@ -39,7 +39,7 @@ function SearchTable() {
     current: 1,
     pageSizeChangeResetCurrent: true,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [formParams, setFormParams] = useState({});
 
   useEffect(() => {
@@ -48,25 +48,37 @@ function SearchTable() {
 
   function fetchData() {
     const { current, pageSize } = pagination;
-    setLoading(true);
-    axios
-      .get('/api/list', {
-        params: {
-          page: current,
-          pageSize,
-          ...formParams,
-        },
-      })
-      .then((res) => {
-        setData(res.data.list);
-        setPatination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
-      });
+    // setLoading(true);
+    // axios
+    //   .get('/api/list', {
+    //     params: {
+    //       page: current,
+    //       pageSize,
+    //       ...formParams,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     setData(res.data.list);
+    //     setPatination({
+    //       ...pagination,
+    //       current,
+    //       pageSize,
+    //       total: res.data.total,
+    //     });
+    //     setLoading(false);
+    //   });
+    const { list, total } = mockApiList({
+      page: current,
+      pageSize,
+      ...formParams,
+    });
+    setData(list);
+    setPatination({
+      ...pagination,
+      current,
+      pageSize,
+      total: total,
+    });
   }
 
   function onChangeTable({ current, pageSize }) {

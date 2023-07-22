@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Typography, List, Skeleton } from '@arco-design/web-react';
-import axios from 'axios';
-
+// import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { GlobalState } from '@/store';
 const { Text } = Typography;
 
 interface ITeam {
@@ -11,14 +12,16 @@ interface ITeam {
 }
 
 function MyTeam() {
+  const { myTeamList } = useSelector((state: GlobalState) => state);
   const [data, setData] = useState<ITeam[]>(new Array(4).fill({}));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    const { data } = await axios
-      .get('/api/users/teamList')
-      .finally(() => setLoading(false));
-    setData(data);
+    // const { data } = await axios
+    //   .get('/api/users/teamList')
+    //   .finally(() => setLoading(false));
+    // setData(data);
+    setData(myTeamList);
   };
 
   useEffect(() => {

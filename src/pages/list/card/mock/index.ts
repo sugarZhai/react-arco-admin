@@ -1,6 +1,4 @@
-import Mock from 'mockjs';
 import dayjs from 'dayjs';
-import setupMock from '@/utils/setupMock';
 
 const qualityCategory = ['视频类', '图文类', '纯文本'];
 const qualityName = ['历史导入', '内容版权', '敏感内容', '商业品牌'];
@@ -37,70 +35,108 @@ const rulesDescription = [
   '精准识别英语、维语、藏语、蒙古语、朝鲜语等多种语言以及emoji表情形态的语义识别。',
 ];
 const getQualityCard = () => {
-  const { list } = Mock.mock({
-    'list|10': [
-      {
-        title: () =>
-          `${Mock.Random.pick(qualityCategory)}-${Mock.Random.pick(
-            qualityName
-          )}`,
-        time: () =>
-          dayjs()
-            .subtract(Mock.Random.natural(0, 30), 'days')
-            .format('YYYY-MM-DD HH:mm:ss'),
-        qualityCount: () => Mock.Random.natural(100, 500),
-        randomCount: () => Mock.Random.natural(0, 100),
-        duration: () => Mock.Random.natural(0, 200),
-      },
-    ],
-  });
+  // const { list } = Mock.mock({
+  //   'list|10': [
+  //     {
+  //       title: () =>
+  //         `${qualityCategory[Math.floor(Math.random() * qualityCategory.length)]}-${qualityName[Math.floor(Math.random() * qualityName.length)]}`,
+  //       time: () =>
+  //         dayjs()
+  //           .subtract(Math.floor(Math.random() * 30), 'days')
+  //           .format('YYYY-MM-DD HH:mm:ss'),
+  //       qualityCount: () => Math.floor(Math.random() * (500 - 100 + 1)) + 100,
+  //       randomCount: () => Math.floor(Math.random() * 101),
+  //       duration: () => Math.floor(Math.random() * 201),
+  //     },
+  //   ],
+  // });
+  const list = [];
+  for (let i = 0; i < 10; i++) {
+    list.push({
+      title: () =>
+        `${
+          qualityCategory[Math.floor(Math.random() * qualityCategory.length)]
+        }-${qualityName[Math.floor(Math.random() * qualityName.length)]}`,
+      time: () =>
+        dayjs()
+          .subtract(Math.floor(Math.random() * 30), 'days')
+          .format('YYYY-MM-DD HH:mm:ss'),
+      qualityCount: Math.floor(Math.random() * (500 - 100 + 1)) + 100,
+      randomCount: Math.floor(Math.random() * 101),
+      duration: Math.floor(Math.random() * 201),
+    });
+  }
   return list;
 };
 
 const getServiceCard = () => {
-  const { list } = Mock.mock({
-    'list|10': [
-      {
-        icon: () => Mock.Random.natural(0, serviceName.length - 1),
-        title: function () {
-          return serviceName[this.icon];
-        },
-        description: function () {
-          return serviceDescriptions[this.icon];
-        },
-        status: () => Mock.Random.natural(0, 2),
-      },
-    ],
-  });
+  // const { list } = Mock.mock({
+  //   'list|10': [
+  //     {
+  //       icon: () => Mock.Random.natural(0, serviceName.length - 1),
+  //       title: function () {
+  //         return serviceName[this.icon];
+  //       },
+  //       description: function () {
+  //         return serviceDescriptions[this.icon];
+  //       },
+  //       status: () => Mock.Random.natural(0, 2),
+  //     },
+  //   ],
+  // });
+  const list = [];
+  const icon = Math.floor(Math.random() * serviceName.length);
+  for (let i = 0; i < 10; i++) {
+    list.push({
+      icon,
+      title: serviceName[icon],
+      description: serviceDescriptions[icon],
+      status: Math.floor(Math.random() * 3),
+    });
+  }
   return list;
 };
 
 const getRulesCard = () => {
-  const { list } = Mock.mock({
-    'list|10': [
-      {
-        index: () => Mock.Random.natural(0, rulesName.length - 1),
-        title: function () {
-          return rulesName[this.index];
-        },
-        description: function () {
-          return rulesDescription[this.index];
-        },
-        status: () => Mock.Random.natural(0, 1),
-      },
-    ],
-  });
+  // const { list } = Mock.mock({
+  //   'list|10': [
+  //     {
+  //       index: () => Mock.Random.natural(0, rulesName.length - 1),
+  //       title: function () {
+  //         return rulesName[this.index];
+  //       },
+  //       description: function () {
+  //         return rulesDescription[this.index];
+  //       },
+  //       status: () => Mock.Random.natural(0, 1),
+  //     },
+  //   ],
+  // });
+  const list = [];
+  for (let i = 0; i < 10; i++) {
+    const index = Math.floor(Math.random() * rulesName.length);
+    const title = rulesName[index];
+    const description = rulesDescription[index];
+    const status = Math.floor(Math.random() * 2);
+    list.push({ index, title, description, status });
+  }
   return list;
 };
 
-setupMock({
-  setup: () => {
-    Mock.mock(new RegExp('/api/cardList'), () => {
-      return {
-        quality: getQualityCard(),
-        service: getServiceCard(),
-        rules: getRulesCard(),
-      };
-    });
-  },
-});
+// setupMock({
+//   setup: () => {
+//     Mock.mock(new RegExp('/api/cardList'), () => {
+//       return {
+//         quality: getQualityCard(),
+//         service: getServiceCard(),
+//         rules: getRulesCard(),
+//       };
+//     });
+//   },
+// });
+
+export const cardMockList = {
+  quality: getQualityCard(),
+  service: getServiceCard(),
+  rules: getRulesCard(),
+};

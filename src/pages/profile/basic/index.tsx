@@ -9,12 +9,11 @@ import {
   Table,
   Badge,
 } from '@arco-design/web-react';
-import axios from 'axios';
+// import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import ProfileItem from './item';
 import styles from './style/index.module.less';
-import './mock';
 
 function BasicProfile() {
   const t = useLocale(locale);
@@ -24,41 +23,84 @@ function BasicProfile() {
   const [preData, setPreData] = useState({});
   const [tableLoading, setTableLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-
+  const resData = {
+    status: 2,
+    video: {
+      mode: '自定义',
+      acquisition: {
+        resolution: '720*1280',
+        frameRate: 15,
+      },
+      encoding: {
+        resolution: '720*1280',
+        rate: {
+          min: 300,
+          max: 800,
+          default: 1500,
+        },
+        frameRate: 15,
+        profile: 'high',
+      },
+    },
+    audio: {
+      mode: '自定义',
+      acquisition: {
+        channels: 8,
+      },
+      encoding: {
+        channels: 8,
+        rate: 128,
+        profile: 'ACC-LC',
+      },
+    },
+  };
   function fetchData() {
-    setLoading(true);
-    axios
-      .get('/api/basicProfile')
-      .then((res) => {
-        setData(res.data || {});
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // setLoading(true);
+    // axios
+    //   .get('/api/basicProfile')
+    //   .then((res) => {
+    //     setData(res.data || {});
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+
+    setData(resData);
   }
 
   function fetchPreData() {
-    setPreLoading(true);
-    axios
-      .get('/api/basicProfile')
-      .then((res) => {
-        setPreData(res.data || {});
-      })
-      .finally(() => {
-        setPreLoading(false);
-      });
+    // setPreLoading(true);
+    // axios
+    //   .get('/api/basicProfile')
+    //   .then((res) => {
+    //     setPreData(res.data || {});
+    //   })
+    //   .finally(() => {
+    //     setPreLoading(false);
+    //   });
+    setPreData(resData);
   }
 
   function fetchTableData() {
-    setTableLoading(true);
-    axios
-      .get('/api/adjustment')
-      .then((res) => {
-        setTableData(res.data);
-      })
-      .finally(() => {
-        setTableLoading(false);
-      });
+    // setTableLoading(true);
+    // axios
+    //   .get('/api/adjustment')
+    //   .then((res) => {
+    //     setTableData(res.data);
+    //   })
+    //   .finally(() => {
+    //     setTableLoading(false);
+    //   });
+    setTableData([
+      ...new Array(2).fill('0').map(() => ({
+        contentId: `${['视频类', '音频类']}${
+          Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+        }`,
+        content: '视频参数变更，音频参数变更',
+        status: Math.floor(Math.random() * 2),
+        updatedTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      })),
+    ]);
   }
   useEffect(() => {
     fetchData();
@@ -109,6 +151,7 @@ function BasicProfile() {
         <Table
           loading={tableLoading}
           data={tableData}
+          rowKey={'contentId'}
           columns={[
             {
               dataIndex: 'contentId',

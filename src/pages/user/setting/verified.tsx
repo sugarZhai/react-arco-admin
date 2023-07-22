@@ -33,15 +33,48 @@ function Verified() {
   const [tableLoading, setTableLoading] = useState(true);
 
   const getData = async () => {
-    const { data } = await axios
-      .get('/api/user/verified/enterprise')
-      .finally(() => setLoading(false));
-    setData(data);
+    // const { data } = await axios
+    //   .get('/api/user/verified/enterprise')
+    //   .finally(() => setLoading(false));
+    // setData(data);
+    setData({
+      accountType: '企业账号',
+      isVerified: true,
+      verifiedTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      legalPersonName: `${
+        ['王', '李', '张', '刘', '陈', '杨'][Math.floor(Math.random() * 6)]
+      }**`,
+      certificateType: '中国身份证',
+      certificationNumber: `${/[1-9]{3}[*]{12}[0-9]{3}/}`,
+      enterpriseName: `${
+        ['最强', '第一', '领先'][
+          ~~(Math.random() * ['最强', '第一', '领先'].length)
+        ]
+      }${
+        ['科技', '游戏', '汽车'][
+          ~~(Math.random() * ['科技', '游戏', '汽车'].length)
+        ]
+      }`,
+      enterpriseCertificateType: '企业营业执照',
+      organizationCode: `${/[1-9]{1}[*]{7}[0-9]{1}/}`,
+    });
 
-    const { data: tableData } = await axios
-      .get('/api/user/verified/authList')
-      .finally(() => setTableLoading(false));
-    setTableData(tableData);
+    // const { data: tableData } = await axios
+    //   .get('/api/user/verified/authList')
+    //   .finally(() => setTableLoading(false));
+    // setTableData(tableData);
+    setTableData([
+      ...new Array(3).fill('0').map(() => ({
+        authType: '企业证件认证',
+        authContent:
+          `企业证件认证，法人姓名` +
+          `${
+            ['王', '李', '张', '刘', '陈', '杨'][Math.floor(Math.random() * 6)]
+          }**`,
+        authStatus: Math.floor(Math.random() * 1),
+        createdTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      })),
+    ]);
   };
 
   useEffect(() => {

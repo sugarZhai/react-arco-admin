@@ -12,7 +12,6 @@ import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import UserInfoHeader from './header';
 import styles from './style/index.module.less';
-import './mock';
 import { Card } from '@arco-design/web-react';
 import MyProject from './my-projects';
 import MyTeam from './my-team';
@@ -28,8 +27,9 @@ function UserInfo() {
   const [noticeLoading, setNoticeLoading] = useState(false);
 
   const getNotice = async () => {
-    setNoticeLoading(true);
-    await axios.get('/api/user/notice').finally(() => setNoticeLoading(false));
+    //站内通知
+    // setNoticeLoading(true);
+    // await axios.get('/api/user/notice').finally(() => setNoticeLoading(false));
   };
 
   useEffect(() => {

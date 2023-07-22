@@ -6,7 +6,7 @@ import locale from './locale';
 import PublicOpinion from './public-opinion';
 import MultiInterval from '@/components/Chart/multi-stack-interval';
 import PeriodLine from '@/components/Chart/period-legend-line';
-import './mock';
+import { generateList, publishingList } from './mock';
 
 const { Row, Col } = Grid;
 
@@ -19,19 +19,22 @@ function DataAnalysis() {
   const [tableData, setTableData] = useState([]);
 
   const getChartData = async () => {
-    setLoading(true);
-    const { data } = await axios
-      .get('/api/data-analysis/content-publishing')
-      .finally(() => setLoading(false));
-    setChartData(data);
+    // setLoading(true);
+    // const { data } = await axios
+    //   .get('/api/data-analysis/content-publishing')
+    //   .finally(() => setLoading(false));
+    // setChartData(data);
+    setChartData(publishingList);
   };
 
   const getTableData = async () => {
-    setTableLoading(true);
-    const { data } = await axios
-      .get('/api/data-analysis/author-list')
-      .finally(() => setTableLoading(false));
-    setTableData(data.list);
+    const mockList = generateList();
+    // setTableLoading(true);
+    // const { data } = await axios
+    //   .get('/api/data-analysis/author-list')
+    //   .finally(() => setTableLoading(false));
+    // setTableData(data.list);
+    setTableData(mockList);
   };
 
   useEffect(() => {
